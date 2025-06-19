@@ -31,18 +31,34 @@
             display: none;
             text-align: center;
         }
+        #forzaMessage {
+            color: #ff0;
+            font-size: 4rem;
+            display: none;
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+        }
     </style>
 </head>
 <body>
     <img src="pobrany plik.png" alt="Zdjęcie na środku ekranu" id="mainImg">
-    <div id="message">Po co siedzisz na tej stronie? Lepiej sprawdź całą to pieśń na kanale Miracolous Info!!!</div>
+    <div id="message">Po co siedzisz na tej stronie? Sprawdź całą piosenkę na kanale Miraculous Info!!!</div>
+    <div id="forzaMessage">BRAWO TY PIEPRZONY DEBILU ZNALAZŁEŚ EASTER EGGA W EASTER EGGU CHWDP CHWDP CHWDP<br>Tak wgl to podziekowania dla Shodo za pomysł xddd</div>
     <audio id="audio" src="Diss Na Hejtera (mp3cut.net).mp3"></audio>
+    <audio id="forzaAudio" src="Forza Horizon 4 Earrape (A Moment Apart by ODESZA).mp3"></audio>
     <script>
         const audio = document.getElementById('audio');
         const img = document.getElementById('mainImg');
         const message = document.getElementById('message');
+        const forzaAudio = document.getElementById('forzaAudio');
+        const forzaMessage = document.getElementById('forzaMessage');
         let clickCount = 0;
         let isAudioPlaying = false;
+        let keyBuffer = '';
 
         img.addEventListener('click', () => {
             if (isAudioPlaying) return;
@@ -80,6 +96,23 @@
         });
         audio.addEventListener('ended', () => {
             isAudioPlaying = false;
+        });
+
+        // Secret code: "forzahorizon"
+        document.addEventListener('keydown', (e) => {
+            keyBuffer += e.key.toLowerCase();
+            if (keyBuffer.length > 12) keyBuffer = keyBuffer.slice(-12);
+            if (keyBuffer.endsWith('forzahorizon')) {
+                // Hide image and diss audio/message
+                img.style.display = 'none';
+                message.style.display = 'none';
+                audio.pause();
+                audio.currentTime = 0;
+                // Show forza message and play forza audio
+                forzaMessage.style.display = 'block';
+                forzaAudio.currentTime = 0;
+                forzaAudio.play();
+            }
         });
     </script>
 </body>
