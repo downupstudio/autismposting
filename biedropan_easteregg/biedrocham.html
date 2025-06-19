@@ -69,7 +69,6 @@
     <div id="forzaMessage">BRAWO TY PIEPRZONY DEBILU ZNALAZŁEŚ EASTER EGGA W EASTER EGGU CHWDP CHWDP CHWDP<br>Tak wgl to podziekowania dla Shodo za pomysł xddd</div>
     <div id="dvdContainer">
         <img src="forza-horizon-4-pc-xbox-one-xbox-series-x-s-game-microsoft-store-europe-wallpaper-1.jpg" class="dvdImg" id="dvd1" alt="DVD1">
-        <img src="26_forza_horizon_4_niebawem_zniknie_z_cyfrowej_dystrybucji_pojawia_sie_ostatnia_okazja_do_nabycia_gry_0_b.jpg" class="dvdImg" id="dvd2" alt="DVD2">
     </div>
     <audio id="audio" src="Diss Na Hejtera (mp3cut.net).mp3"></audio>
     <audio id="forzaAudio" src="Forza Horizon 4 Earrape (A Moment Apart by ODESZA).mp3"></audio>
@@ -86,40 +85,29 @@
         // DVD bouncing logic
         const dvdContainer = document.getElementById('dvdContainer');
         const dvd1 = document.getElementById('dvd1');
-        const dvd2 = document.getElementById('dvd2');
-        let dvdImgs = [
-            {el: dvd1, x: 0, y: 0, dx: 2, dy: 2}, // Lewy górny róg
-            {el: dvd2, x: window.innerWidth - dvd2.width, y: window.innerHeight - dvd2.height, dx: -2, dy: -2} // Prawy dolny róg
-        ];
+        let dvdImg = {el: dvd1, x: 0, y: 0, dx: 2, dy: 2};
 
-        // Ustaw pozycje DVD po załadowaniu obrazków i okna
+        // Ustaw pozycje DVD po załadowaniu obrazka i okna
         function setInitialDVDPositions() {
-            dvdImgs[0].x = 0;
-            dvdImgs[0].y = 0;
-            dvdImgs[0].dx = 2;
-            dvdImgs[0].dy = 2;
-            dvdImgs[1].x = window.innerWidth - dvd2.width;
-            dvdImgs[1].y = window.innerHeight - dvd2.height;
-            dvdImgs[1].dx = -2;
-            dvdImgs[1].dy = -2;
+            dvdImg.x = 0;
+            dvdImg.y = 0;
+            dvdImg.dx = 2;
+            dvdImg.dy = 2;
         }
 
         function animateDVD() {
             const w = window.innerWidth, h = window.innerHeight;
-            dvdImgs.forEach(obj => {
-            obj.x += obj.dx;
-            obj.y += obj.dy;
-            if (obj.x <= 0 || obj.x + obj.el.width >= w) obj.dx *= -1;
-            if (obj.y <= 0 || obj.y + obj.el.height >= h) obj.dy *= -1;
-            obj.el.style.left = obj.x + 'px';
-            obj.el.style.top = obj.y + 'px';
-            });
+            dvdImg.x += dvdImg.dx;
+            dvdImg.y += dvdImg.dy;
+            if (dvdImg.x <= 0 || dvdImg.x + dvdImg.el.width >= w) dvdImg.dx *= -1;
+            if (dvdImg.y <= 0 || dvdImg.y + dvdImg.el.height >= h) dvdImg.dy *= -1;
+            dvdImg.el.style.left = dvdImg.x + 'px';
+            dvdImg.el.style.top = dvdImg.y + 'px';
             if (dvdContainer.style.display === 'block') {
-            requestAnimationFrame(animateDVD);
+                requestAnimationFrame(animateDVD);
             }
         }
 
-        // Ustaw pozycje po załadowaniu okna i obrazków
         window.addEventListener('load', () => {
             setInitialDVDPositions();
         });
@@ -131,30 +119,30 @@
             if (isAudioPlaying) return;
             clickCount++;
             if (clickCount >= 5) {
-            img.style.display = 'none';
-            message.style.display = 'block';
-            return;
+                img.style.display = 'none';
+                message.style.display = 'block';
+                return;
             }
             isAudioPlaying = true;
             // Always play exactly 5 seconds from a random position
             const playSnippet = () => {
-            const duration = audio.duration;
-            let start = 0;
-            if (duration > 5) {
-                start = Math.random() * (duration - 5);
-            }
-            audio.currentTime = start;
-            audio.play();
-            // Stop after 5 seconds
-            setTimeout(() => {
-                audio.pause();
-                isAudioPlaying = false;
-            }, 5000);
+                const duration = audio.duration;
+                let start = 0;
+                if (duration > 5) {
+                    start = Math.random() * (duration - 5);
+                }
+                audio.currentTime = start;
+                audio.play();
+                // Stop after 5 seconds
+                setTimeout(() => {
+                    audio.pause();
+                    isAudioPlaying = false;
+                }, 5000);
             };
             if (audio.readyState >= 1) {
-            playSnippet();
+                playSnippet();
             } else {
-            audio.onloadedmetadata = playSnippet;
+                audio.onloadedmetadata = playSnippet;
             }
         });
 
@@ -180,11 +168,10 @@
                 forzaAudio.currentTime = 0;
                 forzaAudio.play();
 
-                // Show DVD images and start animation
+                // Show DVD image and start animation
                 dvdContainer.style.display = 'block';
-                // Reset positions
-                dvdImgs[0].x = 50; dvdImgs[0].y = 50; dvdImgs[0].dx = 2; dvdImgs[0].dy = 2;
-                dvdImgs[1].x = 300; dvdImgs[1].y = 200; dvdImgs[1].dx = -2; dvdImgs[1].dy = 2;
+                // Reset position
+                dvdImg.x = 50; dvdImg.y = 50; dvdImg.dx = 2; dvdImg.dy = 2;
                 animateDVD();
             }
         });
