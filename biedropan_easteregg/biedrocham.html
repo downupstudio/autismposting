@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Zdjęcie na środku ekranu</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+        img {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            display: block;
+            cursor: pointer;
+        }
+        #message {
+            color: #fff;
+            font-size: 2rem;
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <img src="pobrany plik.png" alt="Zdjęcie na środku ekranu" id="mainImg">
+    <div id="message">Po co siedzisz na tej stronie? Lepiej sprawdź całą to pieśń na kanale Miracolous Info!!!</div>
+    <audio id="audio" src="Diss Na Hejtera (mp3cut.net).mp3"></audio>
+    <script>
+        const audio = document.getElementById('audio');
+        const img = document.getElementById('mainImg');
+        const message = document.getElementById('message');
+        let clickCount = 0;
+        let isAudioPlaying = false;
+
+        img.addEventListener('click', () => {
+            if (isAudioPlaying) return;
+            clickCount++;
+            if (clickCount >= 5) {
+                img.style.display = 'none';
+                message.style.display = 'block';
+                return;
+            }
+            isAudioPlaying = true;
+            // Always play exactly 5 seconds from a random position
+            const playSnippet = () => {
+                const duration = audio.duration;
+                let start = 0;
+                if (duration > 5) {
+                    start = Math.random() * (duration - 5);
+                }
+                audio.currentTime = start;
+                audio.play();
+                // Stop after 5 seconds
+                setTimeout(() => {
+                    audio.pause();
+                    isAudioPlaying = false;
+                }, 5000);
+            };
+            if (audio.readyState >= 1) {
+                playSnippet();
+            } else {
+                audio.onloadedmetadata = playSnippet;
+            }
+        });
+
+        audio.addEventListener('pause', () => {
+            isAudioPlaying = false;
+        });
+        audio.addEventListener('ended', () => {
+            isAudioPlaying = false;
+        });
+    </script>
+</body>
+</html>

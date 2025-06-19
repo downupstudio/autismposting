@@ -1,0 +1,43 @@
+<style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
+        header { background: #222; color: #fff; padding: 1em 2em; }
+        h1 { margin: 0; }
+        nav { margin-top: 0.5em; }
+        nav a { color: #fff; margin-right: 1em; text-decoration: none; }
+        .container { max-width: 800px; margin: 2em auto; background: #fff; padding: 2em; border-radius: 8px; }
+        .empty-message { color: #888; text-align: center; margin: 3em 0; }
+        footer { text-align: center; color: #888; padding: 1em 0; margin-top: 2em; }
+        /* Blocker CSS*/
+        #mobile-blocker {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(34,34,34,0.97);
+            color: #fff;
+            font-size: 1.5em;
+            text-align: center;
+            padding-top: 30vh;
+        }
+    </style>
+    <body>
+    <div id="mobile-blocker">
+        This site is not available on mobile devices.<br>
+        Please use a desktop or laptop browser.
+    </div>
+    <script>
+        function isMobile() {
+            return /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+        if (isMobile()) {
+            document.getElementById('mobile-blocker').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            // Remove all other elements except #mobile-blocker
+            Array.from(document.body.children).forEach(function(child) {
+                if (child.id !== 'mobile-blocker') {
+                    child.remove();
+                }
+            });
+        }
+    </script>
+</body>
