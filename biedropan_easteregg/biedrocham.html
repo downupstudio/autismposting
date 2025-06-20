@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="pl"></html>
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Zdjęcie na środku ekranu</title>
+    <title>Biedropan EasterEgg</title>
     <style>
         html, body {
             height: 100%;
@@ -186,30 +186,31 @@
             // Pokaż rickrolla
             let coverVideo = document.getElementById('coverVideo');
             if (!coverVideo) {
-            coverVideo = document.createElement('video');
-            coverVideo.id = 'coverVideo';
-            coverVideo.src = 'Rick Astley - Never Gonna Give You Up (Official Music Video).mp4'; 
-            coverVideo.style.position = 'fixed';
-            coverVideo.style.top = '0';
-            coverVideo.style.left = '0';
-            coverVideo.style.width = '100vw';
-            coverVideo.style.height = '100vh';
-            coverVideo.style.objectFit = 'cover';
-            coverVideo.style.zIndex = '9999';
-            coverVideo.autoplay = true;
-            coverVideo.loop = true;
-            coverVideo.muted = false;
-            coverVideo.controls = false;
-            coverVideo.setAttribute('playsinline', '');
-            coverVideo.setAttribute('disablePictureInPicture', '');
-            coverVideo.setAttribute('controlsList', 'nodownload nofullscreen noremoteplayback');
-            document.body.appendChild(coverVideo);
+                coverVideo = document.createElement('video');
+                coverVideo.id = 'coverVideo';
+                coverVideo.src = 'Rick Astley - Never Gonna Give You Up (Official Music Video).mp4'; 
+                coverVideo.style.position = 'fixed';
+                coverVideo.style.top = '0';
+                coverVideo.style.left = '0';
+                coverVideo.style.width = '100vw';
+                coverVideo.style.height = '100vh';
+                coverVideo.style.objectFit = 'cover';
+                coverVideo.style.zIndex = '9999';
+                coverVideo.autoplay = true;
+                coverVideo.loop = true;
+                coverVideo.muted = false;
+                coverVideo.controls = false;
+                coverVideo.setAttribute('playsinline', '');
+                coverVideo.setAttribute('disablePictureInPicture', '');
+                coverVideo.setAttribute('controlsList', 'nodownload nofullscreen noremoteplayback');
+                document.body.appendChild(coverVideo);
 
-            // Zabroń pauzowania lub przewijania rickrolla
-            coverVideo.addEventListener('pause', () => coverVideo.play());
-            coverVideo.addEventListener('seeking', () => coverVideo.currentTime = 0);
-            // Usuń wszyskie kody po wpisaniu haslo
-            easterEggsEnabled = false;
+                // Zabroń pauzowania lub przewijania rickrolla
+                coverVideo.addEventListener('pause', () => coverVideo.play());
+                coverVideo.addEventListener('seeking', () => coverVideo.currentTime = 0);
+                // Usuń wszyskie kody po wpisaniu haslo
+                easterEggsEnabled = false;
+            }
         }
     });
 </script>
