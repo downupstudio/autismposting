@@ -82,7 +82,8 @@
     let isAudioPlaying = false;
     let keyBuffer = '';
 
-    // DVD bouncing logic
+    // Logika DVD
+    document.body.style.overflow = 'hidden'; // Ukryj przewijanie strony
     const dvdContainer = document.getElementById('dvdContainer');
     const dvd1 = document.getElementById('dvd1');
     let dvdImg = {el: dvd1, x: 0, y: 0, dx: 2, dy: 2};
@@ -124,7 +125,7 @@
             return;
         }
         isAudioPlaying = true;
-        // Always play exactly 5 seconds from a random position
+        // Zawsze graj losowy 5 sekundowy fragment audio
         const playSnippet = () => {
             const duration = audio.duration;
             let start = 0;
@@ -133,7 +134,7 @@
             }
             audio.currentTime = start;
             audio.play();
-            // Stop after 5 seconds
+            // Zatrzymaj audio po 5 sekundach
             setTimeout(() => {
                 audio.pause();
                 isAudioPlaying = false;
@@ -153,36 +154,36 @@
         isAudioPlaying = false;
     });
 
-    // Secret code: "forzahorizon" and "haslo"
+    // Tajne kody
     let easterEggsEnabled = true;
     document.addEventListener('keydown', (e) => {
         if (!easterEggsEnabled) return;
         keyBuffer += e.key.toLowerCase();
         if (keyBuffer.length > 12) keyBuffer = keyBuffer.slice(-12);
         if (keyBuffer.endsWith('forzahorizon')) {
-            // Hide image and diss audio/message
+            // Ukryj zdjęcie i audio dissu
             img.style.display = 'none';
             message.style.display = 'none';
             audio.pause();
             audio.currentTime = 0;
-            // Show forza message and play forza audio
+            // Pokaż wiaomość i audio forzy
             forzaMessage.style.display = 'block';
             forzaAudio.currentTime = 0;
             forzaAudio.play();
 
-            // Show DVD image and start animation
+            // Pokaż DVD i rozpocznij animację
             dvdContainer.style.display = 'block';
-            // Reset position
+            // Zresetuj pozycję DVD
             dvdImg.x = 50; dvdImg.y = 50; dvdImg.dx = 2; dvdImg.dy = 2;
             animateDVD();
         }
         if (keyBuffer.endsWith('haslo')) {
             img.style.display = 'none';
-            // Pause forza audio if playing
+            // Zapauzuj audio forzy
             if (forzaAudio && typeof forzaAudio.pause === 'function') {
                 forzaAudio.pause();
             }
-            // Cover the page with a video
+            // Pokaż rickrolla
             let coverVideo = document.getElementById('coverVideo');
             if (!coverVideo) {
             coverVideo = document.createElement('video');
@@ -204,20 +205,10 @@
             coverVideo.setAttribute('controlsList', 'nodownload nofullscreen noremoteplayback');
             document.body.appendChild(coverVideo);
 
-            // Prevent pausing or seeking
+            // Zabroń pauzowania lub przewijania rickrolla
             coverVideo.addEventListener('pause', () => coverVideo.play());
             coverVideo.addEventListener('seeking', () => coverVideo.currentTime = 0);
-
-            // Restart video from beginning after it ends
-            coverVideo.addEventListener('ended', () => {
-                coverVideo.currentTime = 0;
-                coverVideo.play();
-            });
-            } else {
-            coverVideo.style.display = 'block';
-            coverVideo.play();
-            }
-            // Disable all easter eggs after haslo
+            // Usuń wszyskie kody po wpisaniu haslo
             easterEggsEnabled = false;
         }
     });
