@@ -179,7 +179,9 @@
         if (keyBuffer.endsWith('haslo')) {
             img.style.display = 'none';
             // Pause forza audio if playing
-            forzaAudio.pause();
+            if (forzaAudio && typeof forzaAudio.pause === 'function') {
+                forzaAudio.pause();
+            }
             // Cover the page with a video
             let coverVideo = document.getElementById('coverVideo');
             if (!coverVideo) {
