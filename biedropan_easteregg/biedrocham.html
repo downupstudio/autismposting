@@ -73,108 +73,151 @@
     <audio id="audio" src="Diss Na Hejtera (mp3cut.net).mp3"></audio>
     <audio id="forzaAudio" src="Forza Horizon 4 Earrape (A Moment Apart by ODESZA).mp3"></audio>
     <script>
-        const audio = document.getElementById('audio');
-        const img = document.getElementById('mainImg');
-        const message = document.getElementById('message');
-        const forzaAudio = document.getElementById('forzaAudio');
-        const forzaMessage = document.getElementById('forzaMessage');
-        let clickCount = 0;
-        let isAudioPlaying = false;
-        let keyBuffer = '';
+    const audio = document.getElementById('audio');
+    const img = document.getElementById('mainImg');
+    const message = document.getElementById('message');
+    const forzaAudio = document.getElementById('forzaAudio');
+    const forzaMessage = document.getElementById('forzaMessage');
+    let clickCount = 0;
+    let isAudioPlaying = false;
+    let keyBuffer = '';
 
-        // DVD bouncing logic
-        const dvdContainer = document.getElementById('dvdContainer');
-        const dvd1 = document.getElementById('dvd1');
-        let dvdImg = {el: dvd1, x: 0, y: 0, dx: 2, dy: 2};
+    // DVD bouncing logic
+    const dvdContainer = document.getElementById('dvdContainer');
+    const dvd1 = document.getElementById('dvd1');
+    let dvdImg = {el: dvd1, x: 0, y: 0, dx: 2, dy: 2};
 
-        // Ustaw pozycje DVD po załadowaniu obrazka i okna
-        function setInitialDVDPositions() {
-            dvdImg.x = 0;
-            dvdImg.y = 0;
-            dvdImg.dx = 2;
-            dvdImg.dy = 2;
+    // Ustaw pozycje DVD po załadowaniu obrazka i okna
+    function setInitialDVDPositions() {
+        dvdImg.x = 0;
+        dvdImg.y = 0;
+        dvdImg.dx = 2;
+        dvdImg.dy = 2;
+    }
+
+    function animateDVD() {
+        const w = window.innerWidth, h = window.innerHeight;
+        dvdImg.x += dvdImg.dx;
+        dvdImg.y += dvdImg.dy;
+        if (dvdImg.x <= 0 || dvdImg.x + dvdImg.el.width >= w) dvdImg.dx *= -1;
+        if (dvdImg.y <= 0 || dvdImg.y + dvdImg.el.height >= h) dvdImg.dy *= -1;
+        dvdImg.el.style.left = dvdImg.x + 'px';
+        dvdImg.el.style.top = dvdImg.y + 'px';
+        if (dvdContainer.style.display === 'block') {
+            requestAnimationFrame(animateDVD);
         }
+    }
 
-        function animateDVD() {
-            const w = window.innerWidth, h = window.innerHeight;
-            dvdImg.x += dvdImg.dx;
-            dvdImg.y += dvdImg.dy;
-            if (dvdImg.x <= 0 || dvdImg.x + dvdImg.el.width >= w) dvdImg.dx *= -1;
-            if (dvdImg.y <= 0 || dvdImg.y + dvdImg.el.height >= h) dvdImg.dy *= -1;
-            dvdImg.el.style.left = dvdImg.x + 'px';
-            dvdImg.el.style.top = dvdImg.y + 'px';
-            if (dvdContainer.style.display === 'block') {
-                requestAnimationFrame(animateDVD);
-            }
+    window.addEventListener('load', () => {
+        setInitialDVDPositions();
+    });
+    window.addEventListener('resize', () => {
+        setInitialDVDPositions();
+    });
+
+    img.addEventListener('click', () => {
+        if (isAudioPlaying) return;
+        clickCount++;
+        if (clickCount >= 5) {
+            img.style.display = 'none';
+            message.style.display = 'block';
+            return;
         }
-
-        window.addEventListener('load', () => {
-            setInitialDVDPositions();
-        });
-        window.addEventListener('resize', () => {
-            setInitialDVDPositions();
-        });
-
-        img.addEventListener('click', () => {
-            if (isAudioPlaying) return;
-            clickCount++;
-            if (clickCount >= 5) {
-                img.style.display = 'none';
-                message.style.display = 'block';
-                return;
+        isAudioPlaying = true;
+        // Always play exactly 5 seconds from a random position
+        const playSnippet = () => {
+            const duration = audio.duration;
+            let start = 0;
+            if (duration > 5) {
+                start = Math.random() * (duration - 5);
             }
-            isAudioPlaying = true;
-            // Always play exactly 5 seconds from a random position
-            const playSnippet = () => {
-                const duration = audio.duration;
-                let start = 0;
-                if (duration > 5) {
-                    start = Math.random() * (duration - 5);
-                }
-                audio.currentTime = start;
-                audio.play();
-                // Stop after 5 seconds
-                setTimeout(() => {
-                    audio.pause();
-                    isAudioPlaying = false;
-                }, 5000);
-            };
-            if (audio.readyState >= 1) {
-                playSnippet();
-            } else {
-                audio.onloadedmetadata = playSnippet;
-            }
-        });
-
-        audio.addEventListener('pause', () => {
-            isAudioPlaying = false;
-        });
-        audio.addEventListener('ended', () => {
-            isAudioPlaying = false;
-        });
-
-        // Secret code: "forzahorizon"
-        document.addEventListener('keydown', (e) => {
-            keyBuffer += e.key.toLowerCase();
-            if (keyBuffer.length > 12) keyBuffer = keyBuffer.slice(-12);
-            if (keyBuffer.endsWith('forzahorizon')) {
-                // Hide image and diss audio/message
-                img.style.display = 'none';
-                message.style.display = 'none';
+            audio.currentTime = start;
+            audio.play();
+            // Stop after 5 seconds
+            setTimeout(() => {
                 audio.pause();
-                audio.currentTime = 0;
-                // Show forza message and play forza audio
-                forzaMessage.style.display = 'block';
-                forzaAudio.currentTime = 0;
-                forzaAudio.play();
+                isAudioPlaying = false;
+            }, 5000);
+        };
+        if (audio.readyState >= 1) {
+            playSnippet();
+        } else {
+            audio.onloadedmetadata = playSnippet;
+        }
+    });
 
-                // Show DVD image and start animation
-                dvdContainer.style.display = 'block';
-                // Reset position
-                dvdImg.x = 50; dvdImg.y = 50; dvdImg.dx = 2; dvdImg.dy = 2;
-                animateDVD();
+    audio.addEventListener('pause', () => {
+        isAudioPlaying = false;
+    });
+    audio.addEventListener('ended', () => {
+        isAudioPlaying = false;
+    });
+
+    // Secret code: "forzahorizon" and "haslo"
+    let easterEggsEnabled = true;
+    document.addEventListener('keydown', (e) => {
+        if (!easterEggsEnabled) return;
+        keyBuffer += e.key.toLowerCase();
+        if (keyBuffer.length > 12) keyBuffer = keyBuffer.slice(-12);
+        if (keyBuffer.endsWith('forzahorizon')) {
+            // Hide image and diss audio/message
+            img.style.display = 'none';
+            message.style.display = 'none';
+            audio.pause();
+            audio.currentTime = 0;
+            // Show forza message and play forza audio
+            forzaMessage.style.display = 'block';
+            forzaAudio.currentTime = 0;
+            forzaAudio.play();
+
+            // Show DVD image and start animation
+            dvdContainer.style.display = 'block';
+            // Reset position
+            dvdImg.x = 50; dvdImg.y = 50; dvdImg.dx = 2; dvdImg.dy = 2;
+            animateDVD();
+        }
+        // Secret code: "haslo" 
+        if (keyBuffer.endsWith('haslo')) {
+            img.style.display = 'none';
+            // Cover the page with a video
+            let coverVideo = document.getElementById('coverVideo');
+            if (!coverVideo) {
+                coverVideo = document.createElement('video');
+                coverVideo.id = 'coverVideo';
+                coverVideo.src = 'Rick Astley - Never Gonna Give You Up (Official Music Video).mp4'; 
+                coverVideo.style.position = 'fixed';
+                coverVideo.style.top = '0';
+                coverVideo.style.left = '0';
+                coverVideo.style.width = '100vw';
+                coverVideo.style.height = '100vh';
+                coverVideo.style.objectFit = 'cover';
+                coverVideo.style.zIndex = '9999';
+                coverVideo.autoplay = true;
+                coverVideo.loop = true;
+                coverVideo.muted = false;
+                coverVideo.controls = false;
+                coverVideo.setAttribute('playsinline', '');
+                coverVideo.setAttribute('disablePictureInPicture', '');
+                coverVideo.setAttribute('controlsList', 'nodownload nofullscreen noremoteplayback');
+                document.body.appendChild(coverVideo);
+
+                // Prevent pausing or seeking
+                coverVideo.addEventListener('pause', () => coverVideo.play());
+                coverVideo.addEventListener('seeking', () => coverVideo.currentTime = 0);
+
+                // Restart video from beginning after it ends
+                coverVideo.addEventListener('ended', () => {
+                    coverVideo.currentTime = 0;
+                    coverVideo.play();
+                });
+            } else {
+                coverVideo.style.display = 'block';
+                coverVideo.play();
             }
-        });
-    </script>
+            // Disable all easter eggs after haslo
+            easterEggsEnabled = false;
+        }
+    });
+</script>
 </body>
 </html>
