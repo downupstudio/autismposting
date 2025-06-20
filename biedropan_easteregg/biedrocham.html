@@ -176,43 +176,44 @@
             dvdImg.x = 50; dvdImg.y = 50; dvdImg.dx = 2; dvdImg.dy = 2;
             animateDVD();
         }
-        // Secret code: "haslo" 
         if (keyBuffer.endsWith('haslo')) {
             img.style.display = 'none';
+            // Pause forza audio if playing
+            forzaAudio.pause();
             // Cover the page with a video
             let coverVideo = document.getElementById('coverVideo');
             if (!coverVideo) {
-                coverVideo = document.createElement('video');
-                coverVideo.id = 'coverVideo';
-                coverVideo.src = 'Rick Astley - Never Gonna Give You Up (Official Music Video).mp4'; 
-                coverVideo.style.position = 'fixed';
-                coverVideo.style.top = '0';
-                coverVideo.style.left = '0';
-                coverVideo.style.width = '100vw';
-                coverVideo.style.height = '100vh';
-                coverVideo.style.objectFit = 'cover';
-                coverVideo.style.zIndex = '9999';
-                coverVideo.autoplay = true;
-                coverVideo.loop = true;
-                coverVideo.muted = false;
-                coverVideo.controls = false;
-                coverVideo.setAttribute('playsinline', '');
-                coverVideo.setAttribute('disablePictureInPicture', '');
-                coverVideo.setAttribute('controlsList', 'nodownload nofullscreen noremoteplayback');
-                document.body.appendChild(coverVideo);
+            coverVideo = document.createElement('video');
+            coverVideo.id = 'coverVideo';
+            coverVideo.src = 'Rick Astley - Never Gonna Give You Up (Official Music Video).mp4'; 
+            coverVideo.style.position = 'fixed';
+            coverVideo.style.top = '0';
+            coverVideo.style.left = '0';
+            coverVideo.style.width = '100vw';
+            coverVideo.style.height = '100vh';
+            coverVideo.style.objectFit = 'cover';
+            coverVideo.style.zIndex = '9999';
+            coverVideo.autoplay = true;
+            coverVideo.loop = true;
+            coverVideo.muted = false;
+            coverVideo.controls = false;
+            coverVideo.setAttribute('playsinline', '');
+            coverVideo.setAttribute('disablePictureInPicture', '');
+            coverVideo.setAttribute('controlsList', 'nodownload nofullscreen noremoteplayback');
+            document.body.appendChild(coverVideo);
 
-                // Prevent pausing or seeking
-                coverVideo.addEventListener('pause', () => coverVideo.play());
-                coverVideo.addEventListener('seeking', () => coverVideo.currentTime = 0);
+            // Prevent pausing or seeking
+            coverVideo.addEventListener('pause', () => coverVideo.play());
+            coverVideo.addEventListener('seeking', () => coverVideo.currentTime = 0);
 
-                // Restart video from beginning after it ends
-                coverVideo.addEventListener('ended', () => {
-                    coverVideo.currentTime = 0;
-                    coverVideo.play();
-                });
-            } else {
-                coverVideo.style.display = 'block';
+            // Restart video from beginning after it ends
+            coverVideo.addEventListener('ended', () => {
+                coverVideo.currentTime = 0;
                 coverVideo.play();
+            });
+            } else {
+            coverVideo.style.display = 'block';
+            coverVideo.play();
             }
             // Disable all easter eggs after haslo
             easterEggsEnabled = false;
