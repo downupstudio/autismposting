@@ -1,0 +1,39 @@
+<script>
+function isMobile() {
+    return /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+if (isMobile()) {
+    // Try to block parent if same origin
+    try {
+        var parentDoc = window.parent.document;
+        // Prevent duplicate overlays
+        if (!parentDoc.getElementById('mobile-blocker-parent')) {
+            var blocker = parentDoc.createElement('div');
+            blocker.id = 'mobile-blocker-parent';
+            blocker.style.position = 'fixed';
+            blocker.style.zIndex = '99999';
+            blocker.style.top = '0';
+            blocker.style.left = '0';
+            blocker.style.right = '0';
+            blocker.style.bottom = '0';
+            blocker.style.background = 'rgba(34,34,34,0.97)';
+            blocker.style.color = '#fff';
+            blocker.style.fontSize = '1.5em';
+            blocker.style.textAlign = 'center';
+            blocker.style.paddingTop = '30vh';
+            blocker.innerHTML = 'This site is not available on mobile devices.<br>Please use a desktop or laptop browser.';
+            parentDoc.body.appendChild(blocker);
+            parentDoc.body.style.overflow = 'hidden';
+        }
+    } catch (e) {
+        // Fallback: just block inside iframe
+        document.getElementById('mobile-blocker').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        Array.from(document.body.children).forEach(function(child) {
+            if (child.id !== 'mobile-blocker') {
+                child.remove();
+            }
+        });
+    }
+}
+</script>
